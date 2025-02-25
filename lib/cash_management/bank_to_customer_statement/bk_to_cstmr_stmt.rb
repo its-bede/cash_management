@@ -9,8 +9,8 @@ module CashManagement
 
       def initialize(element)
         @group_header = GroupHeader.new(element.at_xpath('./GrpHdr'))
-        @statements = element.xpath('./Stmt')#.map { |stmt| AccountStatement.new(stmt) }
-        @supplementary_data = element.xpath('./SplmtryData')#.map { |data| SupplementaryData.new(data) }
+        @statements = element.xpath('./Stmt').map { |stmt| AccountStatement.new(stmt) }
+        @supplementary_data = element.xpath('./SplmtryData').map { |data| SupplementaryData.new(data) } if element.xpath('./SplmtryData').any?
       end
     end
   end

@@ -2,7 +2,7 @@
 
 # lib/cash_management/bank_to_customer_statement/reader.rb
 
-require 'nokogiri'
+require "nokogiri"
 
 module CashManagement
   # Namespace for the bank to customer statement module
@@ -15,9 +15,11 @@ module CashManagement
 
       attr_reader :file_path, :xsd_path
 
-      def initialize(file_path)
+      def initialize(file_path, options = {})
         @file_path = file_path.to_s
-        @xsd_path = Pathname(File.join(File.dirname(__FILE__), 'schema', 'camt.053.001.08.xsd'))
+        version = options[:version] || :v8
+        schema_file = "camt.053.001.#{version == :v8 ? '08' : '02'}.xsd"
+        @xsd_path = Pathname(File.join(File.dirname(__FILE__), "schema", schema_file))
       end
 
       # Read the bank to customer statement file
@@ -28,8 +30,12 @@ module CashManagement
         doc = Nokogiri::XML(Pathname(file_path).read)
 
         errors = xsd.validate(doc)
+        if errors.any?
+          raise ValidationError, format_errors(errors) if CashManagement.config.strict_parsing
 
-        raise ValidationError, format_errors(errors) if errors.any?
+          puts "#{errors.count} errors found in the file:"
+          puts format_errors(errors)
+        end
 
         doc.remove_namespaces!
         build_document(doc.document)
