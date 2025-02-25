@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>MSGID003</MsgId>
+      <CreDtTm>2025-02-18T09:30:47Z</CreDtTm>
+      <MsgRcpt>
+        <Nm>ACME Corporation</Nm>
+        <PstlAdr>
+          <StrtNm>Business Street</StrtNm>
+          <BldgNb>42</BldgNb>
+          <TwnNm>London</TwnNm>
+          <Ctry>GB</Ctry>
+        </PstlAdr>
+      </MsgRcpt>
+    </GrpHdr>
+    <Stmt>
+      <Id>STMT003</Id>
+      <ElctrncSeqNb>1</ElctrncSeqNb>
+      <LglSeqNb>1</LglSeqNb>
+      <CreDtTm>2025-02-18T09:30:47Z</CreDtTm>
+      <FrToDt>
+        <FrDtTm>2025-02-18T00:00:00Z</FrDtTm>
+        <ToDtTm>2025-02-18T23:59:59Z</ToDtTm>
+      </FrToDt>
+      <Acct>
+        <Id>
+          <IBAN>GB29NWBK60161331926819</IBAN>
+        </Id>
+        <Ccy>GBP</Ccy>
+        <Ownr>
+          <Nm>ACME Corporation</Nm>
+          <PstlAdr>
+            <StrtNm>Business Street</StrtNm>
+            <BldgNb>42</BldgNb>
+            <TwnNm>London</TwnNm>
+            <Ctry>GB</Ctry>
+          </PstlAdr>
+          <Id>
+            <OrgId>
+              <LEI>5493001KJTIIGC8Y1R17</LEI>
+            </OrgId>
+          </Id>
+        </Ownr>
+        <Svcr>
+          <FinInstnId>
+            <BICFI>NWBKGB2L</BICFI>
+            <Nm>National Westminster Bank</Nm>
+          </FinInstnId>
+        </Svcr>
+      </Acct>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>OPBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="GBP">10000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2025-02-18</Dt>
+        </Dt>
+      </Bal>
+      <Bal>
+        <Tp>
+          <CdOrPrtry>
+            <Cd>CLBD</Cd>
+          </CdOrPrtry>
+        </Tp>
+        <Amt Ccy="GBP">11250.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt>
+          <Dt>2025-02-18</Dt>
+        </Dt>
+      </Bal>
+      <TxsSummry>
+        <TtlNtries>
+          <NbOfNtries>2</NbOfNtries>
+          <Sum>1750.00</Sum>
+          <TtlNetNtry>
+            <Amt>1250.00</Amt>
+            <CdtDbtInd>CRDT</CdtDbtInd>
+          </TtlNetNtry>
+        </TtlNtries>
+        <TtlCdtNtries>
+          <NbOfNtries>2</NbOfNtries>
+          <Sum>1500.00</Sum>
+        </TtlCdtNtries>
+        <TtlDbtNtries>
+          <NbOfNtries>1</NbOfNtries>
+          <Sum>250.00</Sum>
+        </TtlDbtNtries>
+      </TxsSummry>
+      <Ntry>
+        <Amt Ccy="GBP">1000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts>
+          <Cd>BOOK</Cd>
+        </Sts>
+        <BookgDt>
+          <Dt>2025-02-18</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2025-02-18</Dt>
+        </ValDt>
+        <AcctSvcrRef>REF2025021801</AcctSvcrRef>
+        <BkTxCd>
+          <Domn>
+            <Cd>PMNT</Cd>
+            <Fmly>
+              <Cd>RCDT</Cd>
+              <SubFmlyCd>ESCT</SubFmlyCd>
+            </Fmly>
+          </Domn>
+        </BkTxCd>
+        <NtryDtls>
+          <TxDtls>
+            <Refs>
+              <AcctSvcrRef>REF2025021801</AcctSvcrRef>
+              <EndToEndId>E2E-REF-001</EndToEndId>
+              <TxId>TXN-001</TxId>
+              <UETR>97ed4827-7b6f-4491-a06f-b548d5a7512d</UETR>
+            </Refs>
+            <Amt Ccy="GBP">1000.00</Amt>
+            <CdtDbtInd>CRDT</CdtDbtInd>
+            <RltdPties>
+              <Dbtr>
+                <Nm>Global Trading Ltd</Nm>
+                <PstlAdr>
+                  <StrtNm>Trading Avenue</StrtNm>
+                  <BldgNb>84</BldgNb>
+                  <TwnNm>Manchester</TwnNm>
+                  <Ctry>GB</Ctry>
+                </PstlAdr>
+              </Dbtr>
+              <DbtrAcct>
+                <Id>
+                  <IBAN>GB33BUKB20201555555555</IBAN>
+                </Id>
+              </DbtrAcct>
+            </RltdPties>
+            <RmtInf>
+              <Ustrd>Invoice 2025-001 payment</Ustrd>
+            </RmtInf>
+          </TxDtls>
+        </NtryDtls>
+        <AddtlNtryInf>Invoice Payment</AddtlNtryInf>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="GBP">500.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts>
+          <Cd>BOOK</Cd>
+        </Sts>
+        <BookgDt>
+          <Dt>2025-02-18</Dt>
+        </BookgDt>
+        <ValDt>
+          <Dt>2025-02-18</Dt>
+        </ValDt>
+        <AcctSvcrRef>REF2025021802</AcctSvcrRef>
+        <BkTxCd>
+          <Domn>
+            <Cd>PMNT</Cd>
+            <Fmly>
+              <Cd>RCDT</Cd>
+              <SubFmlyCd>ESCT</SubFmlyCd>
+            </Fmly>
+          </Domn>
+        </BkTxCd>
+        <NtryDtls>
+          <TxDtls>
+            <Refs>
+              <AcctSvcrRef>REF2025021802</AcctSvcrRef>
+              <EndToEndId>E2E-REF-002</EndToEndId>
+              <TxId>TXN-002</TxId>
+              <UETR>97ed4827-7b6f-4491-a06f-b548d5a7512e</UETR>
+            </Refs>
+            <Amt Ccy="GBP">500.00</Amt>
+            <CdtDbtInd>CRDT</CdtDbtInd>
+            <RltdPties>
+              <Dbtr>
+                <Nm>Local Services Ltd</Nm>
+                <PstlAdr>
+                  <StrtNm>Service Road</StrtNm>
+                  <BldgNb>123</BldgNb>
+                  <TwnNm>Birmingham</TwnNm>
+                  <Ctry>GB</Ctry>
+                </PstlAdr>
+              </Dbtr>
+              <DbtrAcct>
+                <Id>
+                  <IBAN>GB33BUKB20201555555556</IBAN>
+                </Id>
+              </DbtrAcct>
+            </RltdPties>
+            <RmtInf>
+              <Ustrd>Invoice 2025-002 payment</Ustrd>
+            </RmtInf>
+          </TxDtls>
+        </NtryDtls>
+        <AddtlNtryInf>Invoice Payment</AddtlNtryInf>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "cash_management"
+
+# You can add fixtures and/or initialization code here to make experimenting
+# with your gem easier. You can also use a different console, if you like.
+
+def reader = CashManagement::BankToCustomerStatement::Reader.new('/Users/benjamindeutscher/workspace/private/cash_management/test/fixtures/files/minimal-statement.xml')
+def doc = reader.read
+def stmt = doc.bank_to_customer_statement
+
+require "irb"
+IRB.start(__FILE__)
