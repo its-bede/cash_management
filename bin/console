@@ -7,12 +7,13 @@ require "cash_management"
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
-def samples = {
-  v2: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.02.xml",
-  v8: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.08.xml"
-}
+def samples
+  {
+    v2: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.02.xml",
+    v8: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.08.xml"
+  }
+end
 
-# def reader = CashManagement::BankToCustomerStatement::Reader.new('/Users/benjamindeutscher/workspace/private/cash_management/test/fixtures/files/minimal-statement.xml')
 def reader = CashManagement::BankToCustomerStatement::Reader.new(samples.fetch(:v2), version: :v2)
 def doc = reader.read
 def stmt = doc.bank_to_customer_statement

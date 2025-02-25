@@ -1,8 +1,104 @@
 AllCops:
   TargetRubyVersion: 3.1
+  NewCops: enable
+
+# Use plugins instead of require
+plugins:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-minitest
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+
+# For better readability we don't want multiline statements for Arrays and HereDoc to count towards the line count
+# https://docs.rubocop.org/rubocop/cops_metrics.html#metricsmodulelength
+Metrics/ModuleLength: &line_count_metrics
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+  CountComments: false
+
+# https://docs.rubocop.org/rubocop/cops_metrics.html#metricsclasslength
+Metrics/ClassLength:
+  <<: *line_count_metrics
+  Exclude:
+    - 'test/**/*'
+
+# https://docs.rubocop.org/rubocop/cops_metrics.html#metricsblocklength
+Metrics/BlockLength:
+  <<: *line_count_metrics
+  # Allow large blocks in routes and tests
+  Exclude:
+    - 'config/routes/*_routes.rb'
+    - 'config/routes.rb'
+    - 'test/**/*'
+  Max: 30
+
+# https://docs.rubocop.org/rubocop/cops_layout.html#layoutlinelength
+Layout/LineLength:
+  # allow lines longer than 120 (by default) characters if they are comment lines
+  # this is mainly for schema comments from annotate gem
+  AllowedPatterns: ['(\A|\s)#']
+  Exclude:
+    - 'test/**/*'
+  Max: 120
+
+# Exclude test files from AbcSize checks
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*'
+  Max: 30
+
+# Exclude test files from CyclomaticComplexity checks
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'test/**/*'
+  Max: 15
+
+# Exclude test files from PerceivedComplexity checks
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'test/**/*'
+  Max: 15
+
+Minitest/MultipleAssertions:
+  Enabled: false
+
+# Enable Gemspec/RequireMFA cop
+Gemspec/RequireMFA:
+  Enabled: true
+
+# Enable Gemspec/DevelopmentDependencies cop
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+# Disable specific cops for specific files
+Metrics/MethodLength:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/cash_management/bank_to_customer_statement/types/complex/**/*.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/cash_management/bank_to_customer_statement/types/complex/**/*.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/cash_management/bank_to_customer_statement/types/complex/**/*.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/cash_management/bank_to_customer_statement/types/complex/**/*.rb'
+
+Layout/LineLength:
+  Exclude:
+    - 'test/**/*'
+    - 'lib/cash_management/bank_to_customer_statement/types/complex/**/*.rb'

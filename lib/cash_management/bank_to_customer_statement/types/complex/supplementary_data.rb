@@ -10,8 +10,8 @@ module CashManagement
       # Initialize a new SupplementaryData instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @plc_and_nm = element.at_xpath('PlcAndNm')&.content
-        @envlp = parse_envelope(element.at_xpath('Envlp'))
+        @plc_and_nm = element.at_xpath("PlcAndNm")&.content
+        @envlp = parse_envelope(element.at_xpath("Envlp"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 

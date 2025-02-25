@@ -41,11 +41,11 @@ module CashManagement
         assert_equal("BANKBEBB", org_id.any_bic)
         assert_equal("LEINUM123456789", org_id.lei)
         assert_equal(2, org_id.other.size)
-        
+
         assert_equal("123456789", org_id.other[0].id)
         assert_equal({ code: "CUST" }, org_id.other[0].scheme_name)
         assert_equal("BANK", org_id.other[0].issuer)
-        
+
         assert_equal("987654321", org_id.other[1].id)
         assert_equal({ proprietary: "PROP" }, org_id.other[1].scheme_name)
         assert_includes(org_id.raw, "<OrgId>")
@@ -62,4 +62,4 @@ module CashManagement
       end
     end
   end
-end 
+end

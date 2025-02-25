@@ -11,21 +11,22 @@ module CashManagement
   # @example Parse a camt.053.001.08 file
   #   reader = CashManagement::BankToCustomerStatement::Reader.new("statement.xml")
   #   doc = reader.parse
-  #   
+  #
   #   # Access document data
   #   doc.group_header.message_id                # => "STMT20220101001"
   #   doc.group_header.creation_date_time        # => 2022-01-01 12:00:00 UTC
-  #   
+  #
   #   # Access statement information
   #   doc.statements.each do |stmt|
   #     puts "Statement ID: #{stmt.id}"
   #     puts "Account: #{stmt.account.id[:iban]}"
-  #     
-  #     # Access balance information 
+  #
+  #     # Access balance information
   #     stmt.balances.each do |balance|
   #       puts "Balance: #{balance.amount[:value]} #{balance.amount[:currency]}"
   #     end
   #   end
+  # rubocop:disable Layout/LineLength, Metrics/AbcSize, Metrics/MethodLength
   module BankToCustomerStatement
     # Class to read and validate the bank to customer statement file against the bank to customer statement schema
     # The bank to customer statement file is an XML file.
@@ -72,28 +73,24 @@ module CashManagement
       private
 
       def build_document(doc)
-        begin
-          # Check if the required elements exist before creating the document
-          statement_node = doc.at_xpath("//Document/BkToCstmrStmt")
-          
-          if statement_node.nil?
-            raise ValidationError, "Invalid document structure: Missing BkToCstmrStmt element"
-          end
-          
-          statement = BankToCustomerStatement.new(statement_node)
-          
-          # Safely access message_id with proper nil checking
-          message_id = statement.group_header&.message_id || "unknown"
-          CashManagement.config.logger.info("Successfully parsed statement with ID: #{message_id}")
-          
-          Document.new(doc)
-        rescue NoMethodError => e
-          CashManagement.config.logger.error("Error parsing document structure: #{e.message}")
-          raise ValidationError, "Invalid document structure: #{e.message}"
-        rescue StandardError => e
-          CashManagement.config.logger.error("Unexpected error parsing document: #{e.message}")
-          raise
-        end
+        # Check if the required elements exist before creating the document
+        statement_node = doc.at_xpath("//Document/BkToCstmrStmt")
+
+        raise ValidationError, "Invalid document structure: Missing BkToCstmrStmt element" if statement_node.nil?
+
+        statement = BankToCustomerStatement.new(statement_node)
+
+        # Safely access message_id with proper nil checking
+        message_id = statement.group_header&.message_id || "unknown"
+        CashManagement.config.logger.info("Successfully parsed statement with ID: #{message_id}")
+
+        Document.new(doc)
+      rescue NoMethodError => e
+        CashManagement.config.logger.error("Error parsing document structure: #{e.message}")
+        raise ValidationError, "Invalid document structure: #{e.message}"
+      rescue StandardError => e
+        CashManagement.config.logger.error("Unexpected error parsing document: #{e.message}")
+        raise
       end
 
       # Format the errors
@@ -107,3 +104,4 @@ module CashManagement
     end
   end
 end
+# rubocop:enable Layout/LineLength, Metrics/AbcSize, Metrics/MethodLength

@@ -34,7 +34,7 @@ module CashManagement
         return nil unless year_month_str
 
         # Try to parse as YYYY-MM
-        if year_month_str =~ /\A\d{4}-\d{2}\z/
+        if /\A\d{4}-\d{2}\z/.match?(year_month_str)
           year, month = year_month_str.split("-").map(&:to_i)
           { year: year, month: month }
         else

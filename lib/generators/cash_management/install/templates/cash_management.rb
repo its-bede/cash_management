@@ -10,4 +10,4 @@ CashManagement.configure do |config|
 
   # Use the Rails logger
   config.logger = Rails.logger
-end 
+end

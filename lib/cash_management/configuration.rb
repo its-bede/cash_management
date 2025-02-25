@@ -1,22 +1,24 @@
 # frozen_string_literal: true
 
-require 'logger'
+require "logger"
 
 # lib/cash_management/configuration.rb
 
+# Configuration module for CashManagement gem
 module CashManagement
-  # Configuration class for the CashManagement gem
-  class Configuration
+  # Configuration module for CashManagement
+  # Provides configuration options for the gem
+  module Configuration
     # @return [Boolean] Whether to raise errors on missing required elements or invalid values
     attr_accessor :strict_parsing
 
     # Whether to keep the raw XML for each parsed element
     # @return [Boolean]
     attr_accessor :keep_raw_xml
-    
+
     # Logger for the gem
     # @return [Logger, nil]
-    attr_accessor :logger
+    attr_writer :logger
 
     def initialize
       @strict_parsing = false
@@ -64,4 +66,3 @@ module CashManagement
     @config = Configuration.new
   end
 end
-

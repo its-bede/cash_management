@@ -49,7 +49,7 @@ module CashManagement
         credit_line = CreditLine.new(element)
 
         refute(credit_line.included)
-        assert_equal({ value: 10000.00, currency: "USD" }, credit_line.amount)
+        assert_equal({ value: 10_000.00, currency: "USD" }, credit_line.amount)
         assert_equal({ proprietary: "CustomCreditLine" }, credit_line.type)
         assert_includes(credit_line.raw, "<CdtLine>")
       end
@@ -65,4 +65,4 @@ module CashManagement
       end
     end
   end
-end 
+end

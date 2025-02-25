@@ -49,12 +49,12 @@ module CashManagement
         assert_equal("Brabant", person_id.date_and_place_of_birth.province_of_birth)
         assert_equal("Brussels", person_id.date_and_place_of_birth.city_of_birth)
         assert_equal("BE", person_id.date_and_place_of_birth.country_of_birth)
-        
+
         assert_equal(2, person_id.other.size)
         assert_equal("123456789", person_id.other[0].id)
         assert_equal({ code: "NIDN" }, person_id.other[0].scheme_name)
         assert_equal("GOVT", person_id.other[0].issuer)
-        
+
         assert_equal("DRIV123456", person_id.other[1].id)
         assert_equal({ proprietary: "DRLC" }, person_id.other[1].scheme_name)
         assert_includes(person_id.raw, "<PrvtId>")
@@ -73,4 +73,4 @@ module CashManagement
       end
     end
   end
-end 
+end

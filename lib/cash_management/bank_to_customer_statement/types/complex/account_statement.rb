@@ -2,8 +2,6 @@
 
 # lib/cash_management/bank_to_customer_statement/types/account_statement.rb
 
-# frozen_string_literal: true
-
 module CashManagement
   module BankToCustomerStatement
     # Represents the AccountStatement (AccountStatement9) element in a camt.053.001.08 message

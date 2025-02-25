@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# lib/cash_management/bank_to_customer_statement/types/complex/report_entry.rb
+# rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 module CashManagement
   module BankToCustomerStatement
     # Represents a Report Entry (ReportEntry10) element in a camt.053.001.08 message
@@ -107,6 +109,7 @@ module CashManagement
 
         result
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 
       # Parse the technical input channel
       # @param element [Nokogiri::XML::Element, nil] The technical input channel element
