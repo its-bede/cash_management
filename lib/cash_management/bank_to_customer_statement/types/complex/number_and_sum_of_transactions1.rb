@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new NumberAndSumOfTransactions1 instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @number_of_entries = element.at_xpath('./NbOfNtries')&.text
-        @sum = parse_decimal(element.at_xpath('./Sum')&.text)
+        @number_of_entries = element.at_xpath("./NbOfNtries")&.text
+        @sum = parse_decimal(element.at_xpath("./Sum")&.text)
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 

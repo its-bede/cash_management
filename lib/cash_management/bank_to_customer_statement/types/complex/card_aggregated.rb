@@ -13,13 +13,15 @@ module CashManagement
       # Initialize a new CardAggregated instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @additional_service = element.at_xpath('./AddtlSvc')&.text
-        @transaction_category = element.at_xpath('./TxCtgy')&.text
-        @sale_reconciliation_id = element.at_xpath('./SaleRcncltnId')&.text
-        @sequence_number_range = element.at_xpath('./SeqNbRg') ?
-                                   CardSequenceNumberRange.new(element.at_xpath('./SeqNbRg')) : nil
-        @transaction_date_range = element.at_xpath('./TxDtRg') ?
-                                    parse_date_or_date_time_period(element.at_xpath('./TxDtRg')) : nil
+        @additional_service = element.at_xpath("./AddtlSvc")&.text
+        @transaction_category = element.at_xpath("./TxCtgy")&.text
+        @sale_reconciliation_id = element.at_xpath("./SaleRcncltnId")&.text
+        @sequence_number_range = if element.at_xpath("./SeqNbRg")
+                                   CardSequenceNumberRange.new(element.at_xpath("./SeqNbRg"))
+                                 end
+        @transaction_date_range = if element.at_xpath("./TxDtRg")
+                                    parse_date_or_date_time_period(element.at_xpath("./TxDtRg"))
+                                  end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -31,10 +33,10 @@ module CashManagement
       def parse_date_or_date_time_period(element)
         return nil unless element
 
-        if element.at_xpath('./Dt')
-          { date: parse_date_period(element.at_xpath('./Dt')) }
-        elsif element.at_xpath('./DtTm')
-          { date_time: DateTimePeriod.new(element.at_xpath('./DtTm')) }
+        if element.at_xpath("./Dt")
+          { date: parse_date_period(element.at_xpath("./Dt")) }
+        elsif element.at_xpath("./DtTm")
+          { date_time: DateTimePeriod.new(element.at_xpath("./DtTm")) }
         end
       end
 
@@ -45,8 +47,8 @@ module CashManagement
         return nil unless element
 
         {
-          from_date: parse_date(element.at_xpath('./FrDt')&.text),
-          to_date: parse_date(element.at_xpath('./ToDt')&.text)
+          from_date: parse_date(element.at_xpath("./FrDt")&.text),
+          to_date: parse_date(element.at_xpath("./ToDt")&.text)
         }
       end
 

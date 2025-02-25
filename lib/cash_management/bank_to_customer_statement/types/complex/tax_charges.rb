@@ -12,9 +12,9 @@ module CashManagement
       # Initialize a new TaxCharges instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @id = element.at_xpath('./Id')&.text
-        @rate = parse_percentage_rate(element.at_xpath('./Rate')&.text)
-        @amount = parse_amount(element.at_xpath('./Amt'))
+        @id = element.at_xpath("./Id")&.text
+        @rate = parse_percentage_rate(element.at_xpath("./Rate")&.text)
+        @amount = parse_amount(element.at_xpath("./Amt"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -37,7 +37,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
     end

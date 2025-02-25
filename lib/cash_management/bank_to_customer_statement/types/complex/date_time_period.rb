@@ -9,8 +9,8 @@ module CashManagement
 
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @from_date_time = parse_datetime(element.at_xpath('./FrDtTm')&.text)
-        @to_date_time = parse_datetime(element.at_xpath('./ToDtTm')&.text)
+        @from_date_time = parse_datetime(element.at_xpath("./FrDtTm")&.text)
+        @to_date_time = parse_datetime(element.at_xpath("./ToDtTm")&.text)
         @raw = element.to_s
       end
 
@@ -21,6 +21,7 @@ module CashManagement
       # @return [DateTime, nil] The parsed datetime or nil if the input is nil
       def parse_datetime(datetime_str)
         return nil unless datetime_str
+
         DateTime.iso8601(datetime_str)
       rescue ArgumentError
         datetime_str

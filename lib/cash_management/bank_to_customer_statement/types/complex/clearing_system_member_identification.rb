@@ -12,9 +12,10 @@ module CashManagement
       # Initialize a new ClearingSystemMemberIdentification instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @clearing_system_id = element.at_xpath('./ClrSysId') ?
-                                ClearingSystemIdentification.new(element.at_xpath('./ClrSysId')) : nil
-        @member_id = element.at_xpath('./MmbId')&.text
+        @clearing_system_id = if element.at_xpath("./ClrSysId")
+                                ClearingSystemIdentification.new(element.at_xpath("./ClrSysId"))
+                              end
+        @member_id = element.at_xpath("./MmbId")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

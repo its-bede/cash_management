@@ -12,9 +12,8 @@ module CashManagement
       # Initialize a new AmountAndCurrencyExchangeDetails instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @currency_exchange = element.at_xpath('./CcyXchg') ?
-                               CurrencyExchange.new(element.at_xpath('./CcyXchg')) : nil
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @currency_exchange = (CurrencyExchange.new(element.at_xpath("./CcyXchg")) if element.at_xpath("./CcyXchg"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -28,7 +27,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
     end

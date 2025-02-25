@@ -12,9 +12,9 @@ module CashManagement
       # Initialize a new ActiveOrHistoricCurrencyAndAmountRange instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @amount = parse_amount_range(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
-        @currency = element.at_xpath('./Ccy')&.text
+        @amount = parse_amount_range(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
+        @currency = element.at_xpath("./Ccy")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -26,19 +26,19 @@ module CashManagement
       def parse_amount_range(element)
         return nil unless element
 
-        if element.at_xpath('./FrAmt')
-          { from_amount: parse_amount_boundary(element.at_xpath('./FrAmt')) }
-        elsif element.at_xpath('./ToAmt')
-          { to_amount: parse_amount_boundary(element.at_xpath('./ToAmt')) }
-        elsif element.at_xpath('./FrToAmt')
+        if element.at_xpath("./FrAmt")
+          { from_amount: parse_amount_boundary(element.at_xpath("./FrAmt")) }
+        elsif element.at_xpath("./ToAmt")
+          { to_amount: parse_amount_boundary(element.at_xpath("./ToAmt")) }
+        elsif element.at_xpath("./FrToAmt")
           {
-            from_amount: parse_amount_boundary(element.at_xpath('./FrToAmt/FrAmt')),
-            to_amount: parse_amount_boundary(element.at_xpath('./FrToAmt/ToAmt'))
+            from_amount: parse_amount_boundary(element.at_xpath("./FrToAmt/FrAmt")),
+            to_amount: parse_amount_boundary(element.at_xpath("./FrToAmt/ToAmt"))
           }
-        elsif element.at_xpath('./EQAmt')
-          { equal_amount: element.at_xpath('./EQAmt')&.text&.to_f }
-        elsif element.at_xpath('./NEQAmt')
-          { not_equal_amount: element.at_xpath('./NEQAmt')&.text&.to_f }
+        elsif element.at_xpath("./EQAmt")
+          { equal_amount: element.at_xpath("./EQAmt")&.text&.to_f }
+        elsif element.at_xpath("./NEQAmt")
+          { not_equal_amount: element.at_xpath("./NEQAmt")&.text&.to_f }
         end
       end
 
@@ -49,8 +49,8 @@ module CashManagement
         return nil unless element
 
         {
-          boundary_amount: element.at_xpath('./BdryAmt')&.text&.to_f,
-          inclusive: element.at_xpath('./Incl')&.text&.downcase == 'true'
+          boundary_amount: element.at_xpath("./BdryAmt")&.text&.to_f,
+          inclusive: element.at_xpath("./Incl")&.text&.downcase == "true"
         }
       end
     end

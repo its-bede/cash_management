@@ -12,16 +12,10 @@ module CashManagement
       # Initialize a new BranchAndFinancialInstitutionIdentification instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @financial_institution_id = if element.at_xpath('./FinInstnId')
-                                      FinancialInstitutionIdentification.new(element.at_xpath('./FinInstnId'))
-                                    else
-                                      nil
+        @financial_institution_id = if element.at_xpath("./FinInstnId")
+                                      FinancialInstitutionIdentification.new(element.at_xpath("./FinInstnId"))
                                     end
-        @branch_id = if element.at_xpath('./BrnchId')
-                       BranchData.new(element.at_xpath('./BrnchId'))
-                     else
-                       nil
-                     end
+        @branch_id = (BranchData.new(element.at_xpath("./BrnchId")) if element.at_xpath("./BrnchId"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

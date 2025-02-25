@@ -7,7 +7,7 @@ module CashManagement
       attr_reader :bank_to_customer_statement
 
       def initialize(doc)
-        @bank_to_customer_statement = BkToCstmrStmt.new(doc.at_xpath('//BkToCstmrStmt'))
+        @bank_to_customer_statement = BkToCstmrStmt.new(doc.at_xpath("//BkToCstmrStmt"))
       end
     end
   end

@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new Charges instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @total_charges_and_tax_amount = parse_amount(element.at_xpath('./TtlChrgsAndTaxAmt'))
-        @records = element.xpath('./Rcrd').map { |rcrd| ChargesRecord.new(rcrd) }
+        @total_charges_and_tax_amount = parse_amount(element.at_xpath("./TtlChrgsAndTaxAmt"))
+        @records = element.xpath("./Rcrd").map { |rcrd| ChargesRecord.new(rcrd) }
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -27,7 +27,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
     end

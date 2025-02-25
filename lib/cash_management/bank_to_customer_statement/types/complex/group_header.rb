@@ -12,12 +12,12 @@ module CashManagement
 
       # @param element [Nokogiri::XML::Element] The GroupHeader XML element
       def initialize(element)
-        @message_id = element.at_xpath('./MsgId')&.text
-        @creation_date_time = parse_datetime(element.at_xpath('./CreDtTm')&.text)
-        @message_recipient = element.at_xpath('./MsgRcpt') ? PartyIdentification.new(element.at_xpath('./MsgRcpt')) : nil
-        @message_pagination = element.at_xpath('./MsgPgntn') ? Pagination.new(element.at_xpath('./MsgPgntn')) : nil
-        @original_business_query = element.at_xpath('./OrgnlBizQry') ? OriginalBusinessQuery.new(element.at_xpath('./OrgnlBizQry')) : nil
-        @additional_information = element.at_xpath('./AddtlInf')&.text
+        @message_id = element.at_xpath("./MsgId")&.text
+        @creation_date_time = parse_datetime(element.at_xpath("./CreDtTm")&.text)
+        @message_recipient = element.at_xpath("./MsgRcpt") ? PartyIdentification.new(element.at_xpath("./MsgRcpt")) : nil
+        @message_pagination = element.at_xpath("./MsgPgntn") ? Pagination.new(element.at_xpath("./MsgPgntn")) : nil
+        @original_business_query = element.at_xpath("./OrgnlBizQry") ? OriginalBusinessQuery.new(element.at_xpath("./OrgnlBizQry")) : nil
+        @additional_information = element.at_xpath("./AddtlInf")&.text
         @raw = element.to_s
       end
 

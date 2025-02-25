@@ -12,9 +12,10 @@ module CashManagement
       # Initialize a new Rate instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @type = parse_type(element.at_xpath('./Tp'))
-        @validity_range = element.at_xpath('./VldtyRg') ?
-                            ActiveOrHistoricCurrencyAndAmountRange.new(element.at_xpath('./VldtyRg')) : nil
+        @type = parse_type(element.at_xpath("./Tp"))
+        @validity_range = if element.at_xpath("./VldtyRg")
+                            ActiveOrHistoricCurrencyAndAmountRange.new(element.at_xpath("./VldtyRg"))
+                          end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -26,10 +27,10 @@ module CashManagement
       def parse_type(element)
         return nil unless element
 
-        if element.at_xpath('./Pctg')
-          { percentage: element.at_xpath('./Pctg')&.text&.to_f }
-        elsif element.at_xpath('./Othr')
-          { other: element.at_xpath('./Othr')&.text }
+        if element.at_xpath("./Pctg")
+          { percentage: element.at_xpath("./Pctg")&.text&.to_f }
+        elsif element.at_xpath("./Othr")
+          { other: element.at_xpath("./Othr")&.text }
         end
       end
     end

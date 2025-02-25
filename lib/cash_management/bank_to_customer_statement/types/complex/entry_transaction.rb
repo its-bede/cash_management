@@ -20,58 +20,50 @@ module CashManagement
       # Initialize a new EntryTransaction instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @references = element.at_xpath('./Refs') ?
-                        TransactionReferences.new(element.at_xpath('./Refs')) : nil
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
-        @amount_details = element.at_xpath('./AmtDtls') ?
-                            AmountAndCurrencyExchange.new(element.at_xpath('./AmtDtls')) : nil
-        @availability = element.xpath('./Avlbty').map { |avl|
+        @references = (TransactionReferences.new(element.at_xpath("./Refs")) if element.at_xpath("./Refs"))
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
+        @amount_details = if element.at_xpath("./AmtDtls")
+                            AmountAndCurrencyExchange.new(element.at_xpath("./AmtDtls"))
+                          end
+        @availability = element.xpath("./Avlbty").map do |avl|
           CashAvailability.new(avl)
-        }
-        @bank_transaction_code = element.at_xpath('./BkTxCd') ?
-                                   BankTransactionCode.new(element.at_xpath('./BkTxCd')) : nil
-        @charges = element.at_xpath('./Chrgs') ?
-                     Charges.new(element.at_xpath('./Chrgs')) : nil
-        @interest = element.at_xpath('./Intrst') ?
-                      TransactionInterest.new(element.at_xpath('./Intrst')) : nil
-        @related_parties = element.at_xpath('./RltdPties') ?
-                             TransactionParties.new(element.at_xpath('./RltdPties')) : nil
-        @related_agents = element.at_xpath('./RltdAgts') ?
-                            TransactionAgents.new(element.at_xpath('./RltdAgts')) : nil
-        @local_instrument = parse_local_instrument(element.at_xpath('./LclInstrm'))
-        @purpose = parse_purpose(element.at_xpath('./Purp'))
-        @related_remittance_information = element.xpath('./RltdRmtInf').map { |rmt|
+        end
+        @bank_transaction_code = (BankTransactionCode.new(element.at_xpath("./BkTxCd")) if element.at_xpath("./BkTxCd"))
+        @charges = (Charges.new(element.at_xpath("./Chrgs")) if element.at_xpath("./Chrgs"))
+        @interest = (TransactionInterest.new(element.at_xpath("./Intrst")) if element.at_xpath("./Intrst"))
+        @related_parties = (TransactionParties.new(element.at_xpath("./RltdPties")) if element.at_xpath("./RltdPties"))
+        @related_agents = (TransactionAgents.new(element.at_xpath("./RltdAgts")) if element.at_xpath("./RltdAgts"))
+        @local_instrument = parse_local_instrument(element.at_xpath("./LclInstrm"))
+        @purpose = parse_purpose(element.at_xpath("./Purp"))
+        @related_remittance_information = element.xpath("./RltdRmtInf").map do |rmt|
           RemittanceLocation.new(rmt)
-        }
-        @remittance_information = element.at_xpath('./RmtInf') ?
-                                    RemittanceInformation.new(element.at_xpath('./RmtInf')) : nil
-        @related_dates = element.at_xpath('./RltdDts') ?
-                           TransactionDates.new(element.at_xpath('./RltdDts')) : nil
-        @related_price = element.at_xpath('./RltdPric') ?
-                           TransactionPrice.new(element.at_xpath('./RltdPric')) : nil
-        @related_quantities = element.xpath('./RltdQties').map { |qty|
+        end
+        @remittance_information = if element.at_xpath("./RmtInf")
+                                    RemittanceInformation.new(element.at_xpath("./RmtInf"))
+                                  end
+        @related_dates = (TransactionDates.new(element.at_xpath("./RltdDts")) if element.at_xpath("./RltdDts"))
+        @related_price = (TransactionPrice.new(element.at_xpath("./RltdPric")) if element.at_xpath("./RltdPric"))
+        @related_quantities = element.xpath("./RltdQties").map do |qty|
           TransactionQuantities.new(qty)
-        }
-        @financial_instrument_id = element.at_xpath('./FinInstrmId') ?
-                                     SecurityIdentification.new(element.at_xpath('./FinInstrmId')) : nil
-        @tax = element.at_xpath('./Tax') ?
-                 TaxInformation.new(element.at_xpath('./Tax')) : nil
-        @return_information = element.at_xpath('./RtrInf') ?
-                                PaymentReturnReason.new(element.at_xpath('./RtrInf')) : nil
-        @corporate_action = element.at_xpath('./CorpActn') ?
-                              CorporateAction.new(element.at_xpath('./CorpActn')) : nil
-        @safekeeping_account = element.at_xpath('./SfkpgAcct') ?
-                                 CashAccount.new(element.at_xpath('./SfkpgAcct'), :cash_account38) : nil
-        @cash_deposit = element.xpath('./CshDpst').map { |dpst|
+        end
+        @financial_instrument_id = if element.at_xpath("./FinInstrmId")
+                                     SecurityIdentification.new(element.at_xpath("./FinInstrmId"))
+                                   end
+        @tax = (TaxInformation.new(element.at_xpath("./Tax")) if element.at_xpath("./Tax"))
+        @return_information = (PaymentReturnReason.new(element.at_xpath("./RtrInf")) if element.at_xpath("./RtrInf"))
+        @corporate_action = (CorporateAction.new(element.at_xpath("./CorpActn")) if element.at_xpath("./CorpActn"))
+        @safekeeping_account = if element.at_xpath("./SfkpgAcct")
+                                 CashAccount.new(element.at_xpath("./SfkpgAcct"), :cash_account38)
+                               end
+        @cash_deposit = element.xpath("./CshDpst").map do |dpst|
           CashDeposit.new(dpst)
-        }
-        @card_transaction = element.at_xpath('./CardTx') ?
-                              CardTransaction.new(element.at_xpath('./CardTx')) : nil
-        @additional_transaction_information = element.at_xpath('./AddtlTxInf')&.text
-        @supplementary_data = element.xpath('./SplmtryData').map { |data|
+        end
+        @card_transaction = (CardTransaction.new(element.at_xpath("./CardTx")) if element.at_xpath("./CardTx"))
+        @additional_transaction_information = element.at_xpath("./AddtlTxInf")&.text
+        @supplementary_data = element.xpath("./SplmtryData").map do |data|
           SupplementaryData.new(data)
-        }
+        end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -85,7 +77,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
 
@@ -95,10 +87,10 @@ module CashManagement
       def parse_local_instrument(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
 
@@ -108,10 +100,10 @@ module CashManagement
       def parse_purpose(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
     end

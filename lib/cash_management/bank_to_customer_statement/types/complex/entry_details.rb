@@ -12,11 +12,10 @@ module CashManagement
       # Initialize a new EntryDetails instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @batch = element.at_xpath('./Btch') ?
-                   BatchInformation.new(element.at_xpath('./Btch')) : nil
-        @transaction_details = element.xpath('./TxDtls').map { |tx|
+        @batch = (BatchInformation.new(element.at_xpath("./Btch")) if element.at_xpath("./Btch"))
+        @transaction_details = element.xpath("./TxDtls").map do |tx|
           EntryTransaction.new(tx)
-        }
+        end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

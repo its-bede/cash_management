@@ -12,9 +12,9 @@ module CashManagement
       # Initialize a new DisplayCapabilities instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @display_type = element.at_xpath('./DispTp')&.text
-        @number_of_lines = element.at_xpath('./NbOfLines')&.text
-        @line_width = element.at_xpath('./LineWidth')&.text
+        @display_type = element.at_xpath("./DispTp")&.text
+        @number_of_lines = element.at_xpath("./NbOfLines")&.text
+        @line_width = element.at_xpath("./LineWidth")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

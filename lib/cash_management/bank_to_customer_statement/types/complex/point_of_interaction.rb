@@ -12,12 +12,13 @@ module CashManagement
       # Initialize a new PointOfInteraction instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @id = parse_generic_identification(element.at_xpath('./Id'))
-        @system_name = element.at_xpath('./SysNm')&.text
-        @group_id = element.at_xpath('./GrpId')&.text
-        @capabilities = element.at_xpath('./Cpblties') ?
-                          PointOfInteractionCapabilities.new(element.at_xpath('./Cpblties')) : nil
-        @components = element.xpath('./Cmpnt').map { |cmpnt| PointOfInteractionComponent.new(cmpnt) }
+        @id = parse_generic_identification(element.at_xpath("./Id"))
+        @system_name = element.at_xpath("./SysNm")&.text
+        @group_id = element.at_xpath("./GrpId")&.text
+        @capabilities = if element.at_xpath("./Cpblties")
+                          PointOfInteractionCapabilities.new(element.at_xpath("./Cpblties"))
+                        end
+        @components = element.xpath("./Cmpnt").map { |cmpnt| PointOfInteractionComponent.new(cmpnt) }
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -30,10 +31,10 @@ module CashManagement
         return nil unless element
 
         {
-          id: element.at_xpath('./Id')&.text,
-          type: element.at_xpath('./Tp')&.text,
-          issuer: element.at_xpath('./Issr')&.text,
-          short_name: element.at_xpath('./ShrtNm')&.text
+          id: element.at_xpath("./Id")&.text,
+          type: element.at_xpath("./Tp")&.text,
+          issuer: element.at_xpath("./Issr")&.text,
+          short_name: element.at_xpath("./ShrtNm")&.text
         }
       end
     end

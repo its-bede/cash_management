@@ -12,12 +12,11 @@ module CashManagement
       # Initialize a new AccountInterest instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @type = parse_interest_type(element.at_xpath('./Tp'))
-        @rates = element.xpath('./Rate').map { |rate| Rate.new(rate) }
-        @from_to_date = element.at_xpath('./FrToDt') ?
-                          DateTimePeriod.new(element.at_xpath('./FrToDt')) : nil
-        @reason = element.at_xpath('./Rsn')&.text
-        @tax = element.at_xpath('./Tax') ? TaxCharges.new(element.at_xpath('./Tax')) : nil
+        @type = parse_interest_type(element.at_xpath("./Tp"))
+        @rates = element.xpath("./Rate").map { |rate| Rate.new(rate) }
+        @from_to_date = (DateTimePeriod.new(element.at_xpath("./FrToDt")) if element.at_xpath("./FrToDt"))
+        @reason = element.at_xpath("./Rsn")&.text
+        @tax = element.at_xpath("./Tax") ? TaxCharges.new(element.at_xpath("./Tax")) : nil
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -29,10 +28,10 @@ module CashManagement
       def parse_interest_type(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
     end

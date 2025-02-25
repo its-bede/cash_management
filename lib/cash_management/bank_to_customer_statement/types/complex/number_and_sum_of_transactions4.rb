@@ -12,9 +12,9 @@ module CashManagement
       # Initialize a new NumberAndSumOfTransactions4 instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @number_of_entries = element.at_xpath('./NbOfNtries')&.text
-        @sum = parse_decimal(element.at_xpath('./Sum')&.text)
-        @total_net_entry = parse_amount_and_direction(element.at_xpath('./TtlNetNtry'))
+        @number_of_entries = element.at_xpath("./NbOfNtries")&.text
+        @sum = parse_decimal(element.at_xpath("./Sum")&.text)
+        @total_net_entry = parse_amount_and_direction(element.at_xpath("./TtlNetNtry"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -36,8 +36,8 @@ module CashManagement
         return nil unless element
 
         {
-          amount: parse_decimal(element.at_xpath('./Amt')&.text),
-          credit_debit_indicator: element.at_xpath('./CdtDbtInd')&.text
+          amount: parse_decimal(element.at_xpath("./Amt")&.text),
+          credit_debit_indicator: element.at_xpath("./CdtDbtInd")&.text
         }
       end
     end

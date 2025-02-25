@@ -12,11 +12,10 @@ module CashManagement
       # Initialize a new BranchData instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @id = element.at_xpath('./Id')&.text
-        @lei = element.at_xpath('./LEI')&.text
-        @name = element.at_xpath('./Nm')&.text
-        @postal_address = element.at_xpath('./PstlAdr') ?
-                            PostalAddress.new(element.at_xpath('./PstlAdr')) : nil
+        @id = element.at_xpath("./Id")&.text
+        @lei = element.at_xpath("./LEI")&.text
+        @name = element.at_xpath("./Nm")&.text
+        @postal_address = (PostalAddress.new(element.at_xpath("./PstlAdr")) if element.at_xpath("./PstlAdr"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

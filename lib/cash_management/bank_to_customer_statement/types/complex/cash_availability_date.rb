@@ -13,8 +13,8 @@ module CashManagement
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
         # This is a choice element, so only one of the following will be set
-        @number_of_days = element.at_xpath('./NbOfDays')&.text
-        @actual_date = parse_date(element.at_xpath('./ActlDt')&.text)
+        @number_of_days = element.at_xpath("./NbOfDays")&.text
+        @actual_date = parse_date(element.at_xpath("./ActlDt")&.text)
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 

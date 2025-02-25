@@ -13,16 +13,16 @@ module CashManagement
       # @param element [Nokogiri::XML::Element] The XML element to parse
       # @param account_type [Symbol] :cash_account39 or :cash_account38
       def initialize(element, account_type = :cash_account39)
-        @id = parse_account_id(element.at_xpath('./Id'))
-        @type = parse_account_type(element.at_xpath('./Tp'))
-        @currency = element.at_xpath('./Ccy')&.text
-        @name = element.at_xpath('./Nm')&.text
-        @proxy = element.at_xpath('./Prxy') ? ProxyAccountIdentification.new(element.at_xpath('./Prxy')) : nil
+        @id = parse_account_id(element.at_xpath("./Id"))
+        @type = parse_account_type(element.at_xpath("./Tp"))
+        @currency = element.at_xpath("./Ccy")&.text
+        @name = element.at_xpath("./Nm")&.text
+        @proxy = element.at_xpath("./Prxy") ? ProxyAccountIdentification.new(element.at_xpath("./Prxy")) : nil
 
         # These fields are only in CashAccount39, not in CashAccount38
         if account_type == :cash_account39
-          @owner = element.at_xpath('./Ownr') ? PartyIdentification.new(element.at_xpath('./Ownr')) : nil
-          @servicer = element.at_xpath('./Svcr') ? BranchAndFinancialInstitutionIdentification.new(element.at_xpath('./Svcr')) : nil
+          @owner = element.at_xpath("./Ownr") ? PartyIdentification.new(element.at_xpath("./Ownr")) : nil
+          @servicer = element.at_xpath("./Svcr") ? BranchAndFinancialInstitutionIdentification.new(element.at_xpath("./Svcr")) : nil
         end
 
         @raw = element.to_s
@@ -36,14 +36,14 @@ module CashManagement
       def parse_account_id(element)
         return nil unless element
 
-        if element.at_xpath('./IBAN')
-          { iban: element.at_xpath('./IBAN')&.text }
-        elsif element.at_xpath('./Othr')
+        if element.at_xpath("./IBAN")
+          { iban: element.at_xpath("./IBAN")&.text }
+        elsif element.at_xpath("./Othr")
           { other: {
-            id: element.at_xpath('./Othr/Id')&.text,
-            scheme_name: parse_scheme_name(element.at_xpath('./Othr/SchmeNm')),
-            issuer: element.at_xpath('./Othr/Issr')&.text
-          }}
+            id: element.at_xpath("./Othr/Id")&.text,
+            scheme_name: parse_scheme_name(element.at_xpath("./Othr/SchmeNm")),
+            issuer: element.at_xpath("./Othr/Issr")&.text
+          } }
         end
       end
 
@@ -53,10 +53,10 @@ module CashManagement
       def parse_account_type(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
 
@@ -66,10 +66,10 @@ module CashManagement
       def parse_scheme_name(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
     end

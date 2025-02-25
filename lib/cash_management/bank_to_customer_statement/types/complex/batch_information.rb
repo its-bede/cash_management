@@ -13,11 +13,11 @@ module CashManagement
       # Initialize a new BatchInformation instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @message_id = element.at_xpath('./MsgId')&.text
-        @payment_information_id = element.at_xpath('./PmtInfId')&.text
-        @number_of_transactions = element.at_xpath('./NbOfTxs')&.text
-        @total_amount = parse_amount(element.at_xpath('./TtlAmt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
+        @message_id = element.at_xpath("./MsgId")&.text
+        @payment_information_id = element.at_xpath("./PmtInfId")&.text
+        @number_of_transactions = element.at_xpath("./NbOfTxs")&.text
+        @total_amount = parse_amount(element.at_xpath("./TtlAmt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -31,7 +31,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
     end

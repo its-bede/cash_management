@@ -13,12 +13,12 @@ module CashManagement
       # Initialize a new PointOfInteractionComponent instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @poi_component_type = element.at_xpath('./POICmpntTp')&.text
-        @manufacturer_id = element.at_xpath('./ManfctrId')&.text
-        @model = element.at_xpath('./Mdl')&.text
-        @version_number = element.at_xpath('./VrsnNb')&.text
-        @serial_number = element.at_xpath('./SrlNb')&.text
-        @approval_number = element.xpath('./ApprvlNb').map(&:text)
+        @poi_component_type = element.at_xpath("./POICmpntTp")&.text
+        @manufacturer_id = element.at_xpath("./ManfctrId")&.text
+        @model = element.at_xpath("./Mdl")&.text
+        @version_number = element.at_xpath("./VrsnNb")&.text
+        @serial_number = element.at_xpath("./SrlNb")&.text
+        @approval_number = element.xpath("./ApprvlNb").map(&:text)
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

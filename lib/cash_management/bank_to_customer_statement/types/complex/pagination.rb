@@ -10,8 +10,8 @@ module CashManagement
       attr_reader :page_number, :last_page_indicator, :raw
 
       def initialize(element)
-        @page_number = element.at_xpath('./PgNb')&.text&.to_i
-        @last_page_indicator = element.at_xpath('./LastPgInd')&.text == 'true'
+        @page_number = element.at_xpath("./PgNb")&.text&.to_i
+        @last_page_indicator = element.at_xpath("./LastPgInd")&.text == "true"
         @raw = element.to_s
       end
     end

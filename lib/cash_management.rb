@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'zeitwerk'
+require "zeitwerk"
 loader = Zeitwerk::Loader.for_gem
 loader.collapse("#{__dir__}/cash_management/bank_to_customer_statement/types")
 loader.collapse("#{__dir__}/cash_management/bank_to_customer_statement/types/simple")
 loader.collapse("#{__dir__}/cash_management/bank_to_customer_statement/types/complex")
 loader.setup
 
-require 'date'
+require "date"
 
 # Namespace for the CashManagement gem
 module CashManagement

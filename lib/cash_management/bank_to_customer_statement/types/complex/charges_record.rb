@@ -13,15 +13,16 @@ module CashManagement
       # Initialize a new ChargesRecord instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
-        @charge_included_indicator = parse_boolean(element.at_xpath('./ChrgInclInd')&.text)
-        @type = parse_type(element.at_xpath('./Tp'))
-        @rate = parse_percentage_rate(element.at_xpath('./Rate')&.text)
-        @bearer = element.at_xpath('./Br')&.text
-        @agent = element.at_xpath('./Agt') ?
-                   BranchAndFinancialInstitutionIdentification.new(element.at_xpath('./Agt')) : nil
-        @tax = element.at_xpath('./Tax') ? TaxCharges.new(element.at_xpath('./Tax')) : nil
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
+        @charge_included_indicator = parse_boolean(element.at_xpath("./ChrgInclInd")&.text)
+        @type = parse_type(element.at_xpath("./Tp"))
+        @rate = parse_percentage_rate(element.at_xpath("./Rate")&.text)
+        @bearer = element.at_xpath("./Br")&.text
+        @agent = if element.at_xpath("./Agt")
+                   BranchAndFinancialInstitutionIdentification.new(element.at_xpath("./Agt"))
+                 end
+        @tax = element.at_xpath("./Tax") ? TaxCharges.new(element.at_xpath("./Tax")) : nil
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -35,7 +36,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
 
@@ -45,7 +46,7 @@ module CashManagement
       def parse_boolean(bool_str)
         return nil unless bool_str
 
-        bool_str.downcase == 'true'
+        bool_str.downcase == "true"
       end
 
       # Parse the type element
@@ -54,10 +55,10 @@ module CashManagement
       def parse_type(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: parse_generic_identification(element.at_xpath('./Prtry')) }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: parse_generic_identification(element.at_xpath("./Prtry")) }
         end
       end
 
@@ -68,8 +69,8 @@ module CashManagement
         return nil unless element
 
         {
-          id: element.at_xpath('./Id')&.text,
-          issuer: element.at_xpath('./Issr')&.text
+          id: element.at_xpath("./Id")&.text,
+          issuer: element.at_xpath("./Issr")&.text
         }
       end
 

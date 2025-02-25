@@ -14,25 +14,25 @@ module CashManagement
 
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @entry_reference = element.at_xpath('./NtryRef')&.text
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
-        @reversal_indicator = element.at_xpath('./RvslInd')&.text == 'true'
-        @status = parse_status(element.at_xpath('./Sts'))
-        @booking_date = parse_date(element.at_xpath('./BookgDt'))
-        @value_date = parse_date(element.at_xpath('./ValDt'))
-        @account_servicer_reference = element.at_xpath('./AcctSvcrRef')&.text
-        @availability = element.xpath('./Avlbty').map { |avail| CashAvailability.new(avail) }
-        @bank_transaction_code = parse_bank_transaction_code(element.at_xpath('./BkTxCd'))
-        @commission_waiver_indicator = element.at_xpath('./ComssnWvrInd')&.text == 'true'
-        @additional_information_indicator = element.at_xpath('./AddtlInfInd') ? MessageIdentification.new(element.at_xpath('./AddtlInfInd')) : nil
-        @amount_details = element.at_xpath('./AmtDtls') ? AmountAndCurrencyExchange.new(element.at_xpath('./AmtDtls')) : nil
-        @charges = element.at_xpath('./Chrgs') ? Charges.new(element.at_xpath('./Chrgs')) : nil
-        @technical_input_channel = parse_technical_input_channel(element.at_xpath('./TechInptChanl'))
-        @interest = element.at_xpath('./Intrst') ? TransactionInterest.new(element.at_xpath('./Intrst')) : nil
-        @card_transaction = element.at_xpath('./CardTx') ? CardEntry.new(element.at_xpath('./CardTx')) : nil
-        @entry_details = element.xpath('./NtryDtls').map { |detail| EntryDetails.new(detail) }
-        @additional_entry_information = element.at_xpath('./AddtlNtryInf')&.text
+        @entry_reference = element.at_xpath("./NtryRef")&.text
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
+        @reversal_indicator = element.at_xpath("./RvslInd")&.text == "true"
+        @status = parse_status(element.at_xpath("./Sts"))
+        @booking_date = parse_date(element.at_xpath("./BookgDt"))
+        @value_date = parse_date(element.at_xpath("./ValDt"))
+        @account_servicer_reference = element.at_xpath("./AcctSvcrRef")&.text
+        @availability = element.xpath("./Avlbty").map { |avail| CashAvailability.new(avail) }
+        @bank_transaction_code = parse_bank_transaction_code(element.at_xpath("./BkTxCd"))
+        @commission_waiver_indicator = element.at_xpath("./ComssnWvrInd")&.text == "true"
+        @additional_information_indicator = element.at_xpath("./AddtlInfInd") ? MessageIdentification.new(element.at_xpath("./AddtlInfInd")) : nil
+        @amount_details = element.at_xpath("./AmtDtls") ? AmountAndCurrencyExchange.new(element.at_xpath("./AmtDtls")) : nil
+        @charges = element.at_xpath("./Chrgs") ? Charges.new(element.at_xpath("./Chrgs")) : nil
+        @technical_input_channel = parse_technical_input_channel(element.at_xpath("./TechInptChanl"))
+        @interest = element.at_xpath("./Intrst") ? TransactionInterest.new(element.at_xpath("./Intrst")) : nil
+        @card_transaction = element.at_xpath("./CardTx") ? CardEntry.new(element.at_xpath("./CardTx")) : nil
+        @entry_details = element.xpath("./NtryDtls").map { |detail| EntryDetails.new(detail) }
+        @additional_entry_information = element.at_xpath("./AddtlNtryInf")&.text
         @raw = element.to_s
       end
 
@@ -46,7 +46,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
 
@@ -56,10 +56,10 @@ module CashManagement
       def parse_status(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
 
@@ -69,10 +69,10 @@ module CashManagement
       def parse_date(element)
         return nil unless element
 
-        if element.at_xpath('./Dt')
-          { date: parse_iso_date(element.at_xpath('./Dt')&.text) }
-        elsif element.at_xpath('./DtTm')
-          { date_time: parse_datetime(element.at_xpath('./DtTm')&.text) }
+        if element.at_xpath("./Dt")
+          { date: parse_iso_date(element.at_xpath("./Dt")&.text) }
+        elsif element.at_xpath("./DtTm")
+          { date_time: parse_datetime(element.at_xpath("./DtTm")&.text) }
         end
       end
 
@@ -84,24 +84,24 @@ module CashManagement
 
         result = {}
 
-        if element.at_xpath('./Domn')
+        if element.at_xpath("./Domn")
           domain = {}
-          domain[:code] = element.at_xpath('./Domn/Cd')&.text
+          domain[:code] = element.at_xpath("./Domn/Cd")&.text
 
-          if element.at_xpath('./Domn/Fmly')
+          if element.at_xpath("./Domn/Fmly")
             family = {}
-            family[:code] = element.at_xpath('./Domn/Fmly/Cd')&.text
-            family[:sub_family_code] = element.at_xpath('./Domn/Fmly/SubFmlyCd')&.text
+            family[:code] = element.at_xpath("./Domn/Fmly/Cd")&.text
+            family[:sub_family_code] = element.at_xpath("./Domn/Fmly/SubFmlyCd")&.text
             domain[:family] = family
           end
 
           result[:domain] = domain
         end
 
-        if element.at_xpath('./Prtry')
+        if element.at_xpath("./Prtry")
           proprietary = {}
-          proprietary[:code] = element.at_xpath('./Prtry/Cd')&.text
-          proprietary[:issuer] = element.at_xpath('./Prtry/Issr')&.text
+          proprietary[:code] = element.at_xpath("./Prtry/Cd")&.text
+          proprietary[:issuer] = element.at_xpath("./Prtry/Issr")&.text
           result[:proprietary] = proprietary
         end
 
@@ -114,10 +114,10 @@ module CashManagement
       def parse_technical_input_channel(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
 
@@ -126,6 +126,7 @@ module CashManagement
       # @return [Date, nil] The parsed date or nil
       def parse_iso_date(date_str)
         return nil unless date_str
+
         Date.iso8601(date_str)
       rescue ArgumentError
         date_str
@@ -136,6 +137,7 @@ module CashManagement
       # @return [DateTime, nil] The parsed datetime or nil
       def parse_datetime(datetime_str)
         return nil unless datetime_str
+
         DateTime.iso8601(datetime_str)
       rescue ArgumentError
         datetime_str

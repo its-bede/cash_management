@@ -13,14 +13,15 @@ module CashManagement
       # Initialize a new PlainCardData instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @pan = element.at_xpath('./PAN')&.text
-        @card_sequence_number = element.at_xpath('./CardSeqNb')&.text
-        @effective_date = parse_year_month(element.at_xpath('./FctvDt')&.text)
-        @expiry_date = parse_year_month(element.at_xpath('./XpryDt')&.text)
-        @service_code = element.at_xpath('./SvcCd')&.text
-        @track_data = element.xpath('./TrckData').map { |track| TrackData.new(track) }
-        @card_security_code = element.at_xpath('./CardSctyCd') ?
-                                CardSecurityInformation.new(element.at_xpath('./CardSctyCd')) : nil
+        @pan = element.at_xpath("./PAN")&.text
+        @card_sequence_number = element.at_xpath("./CardSeqNb")&.text
+        @effective_date = parse_year_month(element.at_xpath("./FctvDt")&.text)
+        @expiry_date = parse_year_month(element.at_xpath("./XpryDt")&.text)
+        @service_code = element.at_xpath("./SvcCd")&.text
+        @track_data = element.xpath("./TrckData").map { |track| TrackData.new(track) }
+        @card_security_code = if element.at_xpath("./CardSctyCd")
+                                CardSecurityInformation.new(element.at_xpath("./CardSctyCd"))
+                              end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -34,7 +35,7 @@ module CashManagement
 
         # Try to parse as YYYY-MM
         if year_month_str =~ /\A\d{4}-\d{2}\z/
-          year, month = year_month_str.split('-').map(&:to_i)
+          year, month = year_month_str.split("-").map(&:to_i)
           { year: year, month: month }
         else
           # Return as is if not in expected format

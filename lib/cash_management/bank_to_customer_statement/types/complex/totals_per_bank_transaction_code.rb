@@ -14,20 +14,21 @@ module CashManagement
       # Initialize a new TotalsPerBankTransactionCode instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @number_of_entries = element.at_xpath('./NbOfNtries')&.text
-        @sum = parse_decimal(element.at_xpath('./Sum')&.text)
-        @total_net_entry = parse_amount_and_direction(element.at_xpath('./TtlNetNtry'))
-        @credit_entries = element.at_xpath('./CdtNtries') ?
-                            NumberAndSumOfTransactions1.new(element.at_xpath('./CdtNtries')) : nil
-        @debit_entries = element.at_xpath('./DbtNtries') ?
-                           NumberAndSumOfTransactions1.new(element.at_xpath('./DbtNtries')) : nil
-        @forecast_indicator = parse_boolean(element.at_xpath('./FcstInd')&.text)
-        @bank_transaction_code = element.at_xpath('./BkTxCd') ?
-                                   BankTransactionCode.new(element.at_xpath('./BkTxCd')) : nil
-        @availability = element.xpath('./Avlbty').map { |avl|
+        @number_of_entries = element.at_xpath("./NbOfNtries")&.text
+        @sum = parse_decimal(element.at_xpath("./Sum")&.text)
+        @total_net_entry = parse_amount_and_direction(element.at_xpath("./TtlNetNtry"))
+        @credit_entries = if element.at_xpath("./CdtNtries")
+                            NumberAndSumOfTransactions1.new(element.at_xpath("./CdtNtries"))
+                          end
+        @debit_entries = if element.at_xpath("./DbtNtries")
+                           NumberAndSumOfTransactions1.new(element.at_xpath("./DbtNtries"))
+                         end
+        @forecast_indicator = parse_boolean(element.at_xpath("./FcstInd")&.text)
+        @bank_transaction_code = (BankTransactionCode.new(element.at_xpath("./BkTxCd")) if element.at_xpath("./BkTxCd"))
+        @availability = element.xpath("./Avlbty").map do |avl|
           CashAvailability.new(avl)
-        }
-        @date = parse_date(element.at_xpath('./Dt'))
+        end
+        @date = parse_date(element.at_xpath("./Dt"))
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -49,8 +50,8 @@ module CashManagement
         return nil unless element
 
         {
-          amount: parse_decimal(element.at_xpath('./Amt')&.text),
-          credit_debit_indicator: element.at_xpath('./CdtDbtInd')&.text
+          amount: parse_decimal(element.at_xpath("./Amt")&.text),
+          credit_debit_indicator: element.at_xpath("./CdtDbtInd")&.text
         }
       end
 
@@ -60,7 +61,7 @@ module CashManagement
       def parse_boolean(bool_str)
         return nil unless bool_str
 
-        bool_str.downcase == 'true'
+        bool_str.downcase == "true"
       end
 
       # Parse a date element
@@ -69,10 +70,10 @@ module CashManagement
       def parse_date(element)
         return nil unless element
 
-        if element.at_xpath('./Dt')
-          { date: parse_iso_date(element.at_xpath('./Dt')&.text) }
-        elsif element.at_xpath('./DtTm')
-          { date_time: parse_datetime(element.at_xpath('./DtTm')&.text) }
+        if element.at_xpath("./Dt")
+          { date: parse_iso_date(element.at_xpath("./Dt")&.text) }
+        elsif element.at_xpath("./DtTm")
+          { date_time: parse_datetime(element.at_xpath("./DtTm")&.text) }
         end
       end
 

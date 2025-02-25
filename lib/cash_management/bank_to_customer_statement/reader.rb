@@ -12,13 +12,12 @@ module CashManagement
     # Class to read and validate the bank to customer statement file against the bank to customer statement schema
     # The bank to customer statement file is an XML file.
     class Reader
-
       attr_reader :file_path, :xsd_path
 
       def initialize(file_path, options = {})
         @file_path = file_path.to_s
         version = options[:version] || :v8
-        schema_file = "camt.053.001.#{version == :v8 ? '08' : '02'}.xsd"
+        schema_file = "camt.053.001.#{version == :v8 ? "08" : "02"}.xsd"
         @xsd_path = Pathname(File.join(File.dirname(__FILE__), "schema", schema_file))
       end
 

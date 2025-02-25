@@ -8,8 +8,8 @@ require "cash_management"
 # with your gem easier. You can also use a different console, if you like.
 
 def samples = {
-  v2: '/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.02.xml',
-  v8: '/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.08.xml'
+  v2: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.02.xml",
+  v8: "/Users/benjamindeutscher/workspace/private/cash_management/samples/053.001.08.xml"
 }
 
 # def reader = CashManagement::BankToCustomerStatement::Reader.new('/Users/benjamindeutscher/workspace/private/cash_management/test/fixtures/files/minimal-statement.xml')

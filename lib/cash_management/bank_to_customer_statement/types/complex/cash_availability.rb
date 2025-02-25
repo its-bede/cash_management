@@ -12,10 +12,9 @@ module CashManagement
       # Initialize a new CashAvailability instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @date = element.at_xpath('./Dt') ?
-                  CashAvailabilityDate.new(element.at_xpath('./Dt')) : nil
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
+        @date = (CashAvailabilityDate.new(element.at_xpath("./Dt")) if element.at_xpath("./Dt"))
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -29,7 +28,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
     end

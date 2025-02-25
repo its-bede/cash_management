@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new CardSequenceNumberRange instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @first_transaction = element.at_xpath('./FrstTx')&.text
-        @last_transaction = element.at_xpath('./LastTx')&.text
+        @first_transaction = element.at_xpath("./FrstTx")&.text
+        @last_transaction = element.at_xpath("./LastTx")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

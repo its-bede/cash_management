@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new ClearingSystemIdentification instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @code = element.at_xpath('./Cd')&.text
-        @proprietary = element.at_xpath('./Prtry')&.text
+        @code = element.at_xpath("./Cd")&.text
+        @proprietary = element.at_xpath("./Prtry")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

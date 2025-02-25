@@ -10,9 +10,9 @@ module CashManagement
       attr_reader :message_id, :message_name_id, :creation_date_time, :raw
 
       def initialize(element)
-        @message_id = element.at_xpath('./MsgId')&.text
-        @message_name_id = element.at_xpath('./MsgNmId')&.text
-        @creation_date_time = parse_datetime(element.at_xpath('./CreDtTm')&.text)
+        @message_id = element.at_xpath("./MsgId")&.text
+        @message_name_id = element.at_xpath("./MsgNmId")&.text
+        @creation_date_time = parse_datetime(element.at_xpath("./CreDtTm")&.text)
         @raw = element.to_s
       end
 
@@ -20,6 +20,7 @@ module CashManagement
 
       def parse_datetime(datetime_str)
         return nil unless datetime_str
+
         DateTime.iso8601(datetime_str)
       rescue ArgumentError
         datetime_str

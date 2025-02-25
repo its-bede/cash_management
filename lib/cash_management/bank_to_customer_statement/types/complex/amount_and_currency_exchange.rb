@@ -13,17 +13,21 @@ module CashManagement
       # Initialize a new AmountAndCurrencyExchange instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @instructed_amount = element.at_xpath('./InstdAmt') ?
-                               AmountAndCurrencyExchangeDetails.new(element.at_xpath('./InstdAmt')) : nil
-        @transaction_amount = element.at_xpath('./TxAmt') ?
-                                AmountAndCurrencyExchangeDetails.new(element.at_xpath('./TxAmt')) : nil
-        @counter_value_amount = element.at_xpath('./CntrValAmt') ?
-                                  AmountAndCurrencyExchangeDetails.new(element.at_xpath('./CntrValAmt')) : nil
-        @announced_posting_amount = element.at_xpath('./AnncdPstngAmt') ?
-                                      AmountAndCurrencyExchangeDetails.new(element.at_xpath('./AnncdPstngAmt')) : nil
-        @proprietary_amounts = element.xpath('./PrtryAmt').map { |amt|
+        @instructed_amount = if element.at_xpath("./InstdAmt")
+                               AmountAndCurrencyExchangeDetails.new(element.at_xpath("./InstdAmt"))
+                             end
+        @transaction_amount = if element.at_xpath("./TxAmt")
+                                AmountAndCurrencyExchangeDetails.new(element.at_xpath("./TxAmt"))
+                              end
+        @counter_value_amount = if element.at_xpath("./CntrValAmt")
+                                  AmountAndCurrencyExchangeDetails.new(element.at_xpath("./CntrValAmt"))
+                                end
+        @announced_posting_amount = if element.at_xpath("./AnncdPstngAmt")
+                                      AmountAndCurrencyExchangeDetails.new(element.at_xpath("./AnncdPstngAmt"))
+                                    end
+        @proprietary_amounts = element.xpath("./PrtryAmt").map do |amt|
           ProprietaryAmountAndCurrencyExchangeDetails.new(amt)
-        }
+        end
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

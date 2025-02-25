@@ -14,11 +14,11 @@ module CashManagement
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
         # This is a choice element, so only one of the following will be set
-        @from_sequence = element.at_xpath('./FrSeq')&.text
-        @to_sequence = element.at_xpath('./ToSeq')&.text
-        @from_to_sequences = element.xpath('./FrToSeq').map { |seq| FromToSequence.new(seq) }
-        @equal_sequences = element.xpath('./EQSeq').map(&:text)
-        @not_equal_sequences = element.xpath('./NEQSeq').map(&:text)
+        @from_sequence = element.at_xpath("./FrSeq")&.text
+        @to_sequence = element.at_xpath("./ToSeq")&.text
+        @from_to_sequences = element.xpath("./FrToSeq").map { |seq| FromToSequence.new(seq) }
+        @equal_sequences = element.xpath("./EQSeq").map(&:text)
+        @not_equal_sequences = element.xpath("./NEQSeq").map(&:text)
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

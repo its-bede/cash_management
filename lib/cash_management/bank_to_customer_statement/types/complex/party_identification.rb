@@ -10,11 +10,11 @@ module CashManagement
       attr_reader :name, :postal_address, :identification, :country_of_residence, :contact_details, :raw
 
       def initialize(element)
-        @name = element.at_xpath('./Nm')&.text
-        @postal_address = element.at_xpath('./PstlAdr') ? PostalAddress.new(element.at_xpath('./PstlAdr')) : nil
-        @identification = element.at_xpath('./Id') ? PartyChoice.new(element.at_xpath('./Id')) : nil
-        @country_of_residence = element.at_xpath('./CtryOfRes')&.text
-        @contact_details = element.at_xpath('./CtctDtls') ? Contact.new(element.at_xpath('./CtctDtls')) : nil
+        @name = element.at_xpath("./Nm")&.text
+        @postal_address = element.at_xpath("./PstlAdr") ? PostalAddress.new(element.at_xpath("./PstlAdr")) : nil
+        @identification = element.at_xpath("./Id") ? PartyChoice.new(element.at_xpath("./Id")) : nil
+        @country_of_residence = element.at_xpath("./CtryOfRes")&.text
+        @contact_details = element.at_xpath("./CtctDtls") ? Contact.new(element.at_xpath("./CtctDtls")) : nil
         @raw = element.to_s
       end
     end

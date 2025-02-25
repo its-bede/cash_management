@@ -13,14 +13,13 @@ module CashManagement
       # Initialize a new InterestRecord instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @amount = parse_amount(element.at_xpath('./Amt'))
-        @credit_debit_indicator = element.at_xpath('./CdtDbtInd')&.text
-        @type = parse_type(element.at_xpath('./Tp'))
-        @rate = element.at_xpath('./Rate') ? Rate.new(element.at_xpath('./Rate')) : nil
-        @from_to_date = element.at_xpath('./FrToDt') ?
-                          DateTimePeriod.new(element.at_xpath('./FrToDt')) : nil
-        @reason = element.at_xpath('./Rsn')&.text
-        @tax = element.at_xpath('./Tax') ? TaxCharges.new(element.at_xpath('./Tax')) : nil
+        @amount = parse_amount(element.at_xpath("./Amt"))
+        @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
+        @type = parse_type(element.at_xpath("./Tp"))
+        @rate = element.at_xpath("./Rate") ? Rate.new(element.at_xpath("./Rate")) : nil
+        @from_to_date = (DateTimePeriod.new(element.at_xpath("./FrToDt")) if element.at_xpath("./FrToDt"))
+        @reason = element.at_xpath("./Rsn")&.text
+        @tax = element.at_xpath("./Tax") ? TaxCharges.new(element.at_xpath("./Tax")) : nil
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
@@ -34,7 +33,7 @@ module CashManagement
 
         {
           value: element.text&.to_f,
-          currency: element.attribute('Ccy')&.value
+          currency: element.attribute("Ccy")&.value
         }
       end
 
@@ -44,10 +43,10 @@ module CashManagement
       def parse_type(element)
         return nil unless element
 
-        if element.at_xpath('./Cd')
-          { code: element.at_xpath('./Cd')&.text }
-        elsif element.at_xpath('./Prtry')
-          { proprietary: element.at_xpath('./Prtry')&.text }
+        if element.at_xpath("./Cd")
+          { code: element.at_xpath("./Cd")&.text }
+        elsif element.at_xpath("./Prtry")
+          { proprietary: element.at_xpath("./Prtry")&.text }
         end
       end
     end

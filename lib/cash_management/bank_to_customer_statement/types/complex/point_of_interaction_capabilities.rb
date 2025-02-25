@@ -13,13 +13,13 @@ module CashManagement
       # Initialize a new PointOfInteractionCapabilities instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @card_reading_capabilities = element.xpath('./CardRdngCpblties').map(&:text)
-        @cardholder_verification_capabilities = element.xpath('./CrdhldrVrfctnCpblties').map(&:text)
-        @online_capabilities = element.at_xpath('./OnLineCpblties')&.text
-        @display_capabilities = element.xpath('./DispCpblties').map { |disp|
+        @card_reading_capabilities = element.xpath("./CardRdngCpblties").map(&:text)
+        @cardholder_verification_capabilities = element.xpath("./CrdhldrVrfctnCpblties").map(&:text)
+        @online_capabilities = element.at_xpath("./OnLineCpblties")&.text
+        @display_capabilities = element.xpath("./DispCpblties").map do |disp|
           DisplayCapabilities.new(disp)
-        }
-        @print_line_width = element.at_xpath('./PrtLineWidth')&.text
+        end
+        @print_line_width = element.at_xpath("./PrtLineWidth")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

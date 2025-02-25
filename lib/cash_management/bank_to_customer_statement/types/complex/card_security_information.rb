@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new CardSecurityInformation instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @csc_management = element.at_xpath('./CSCMgmt')&.text
-        @csc_value = element.at_xpath('./CSCVal')&.text
+        @csc_management = element.at_xpath("./CSCMgmt")&.text
+        @csc_value = element.at_xpath("./CSCVal")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end

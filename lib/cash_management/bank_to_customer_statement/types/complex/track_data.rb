@@ -12,8 +12,8 @@ module CashManagement
       # Initialize a new TrackData instance from an XML element
       # @param element [Nokogiri::XML::Element] The XML element to parse
       def initialize(element)
-        @track_number = element.at_xpath('./TrckNb')&.text
-        @track_value = element.at_xpath('./TrckVal')&.text
+        @track_number = element.at_xpath("./TrckNb")&.text
+        @track_value = element.at_xpath("./TrckVal")&.text
         @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end
