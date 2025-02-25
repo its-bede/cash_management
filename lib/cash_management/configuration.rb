@@ -8,7 +8,7 @@ require "logger"
 module CashManagement
   # Configuration module for CashManagement
   # Provides configuration options for the gem
-  module Configuration
+  class Configuration
     # @return [Boolean] Whether to raise errors on missing required elements or invalid values
     attr_accessor :strict_parsing
 
