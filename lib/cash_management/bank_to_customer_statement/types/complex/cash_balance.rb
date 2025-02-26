@@ -17,7 +17,7 @@ module CashManagement
         @credit_debit_indicator = element.at_xpath("./CdtDbtInd")&.text
         @date = parse_date(element.at_xpath("./Dt"))
         @availability = element.xpath("./Avlbty").map { |avail| CashAvailability.new(avail) }
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       private

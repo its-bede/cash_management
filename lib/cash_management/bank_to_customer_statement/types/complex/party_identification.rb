@@ -15,7 +15,7 @@ module CashManagement
         @identification = element.at_xpath("./Id") ? PartyChoice.new(element.at_xpath("./Id")) : nil
         @country_of_residence = element.at_xpath("./CtryOfRes")&.text
         @contact_details = element.at_xpath("./CtctDtls") ? Contact.new(element.at_xpath("./CtctDtls")) : nil
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end
   end

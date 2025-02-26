@@ -25,7 +25,7 @@ module CashManagement
           @servicer = element.at_xpath("./Svcr") ? BranchAndFinancialInstitutionIdentification.new(element.at_xpath("./Svcr")) : nil
         end
 
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       private

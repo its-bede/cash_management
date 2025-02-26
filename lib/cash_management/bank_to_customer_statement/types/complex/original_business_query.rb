@@ -13,7 +13,7 @@ module CashManagement
         @message_id = element.at_xpath("./MsgId")&.text
         @message_name_id = element.at_xpath("./MsgNmId")&.text
         @creation_date_time = parse_datetime(element.at_xpath("./CreDtTm")&.text)
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       private

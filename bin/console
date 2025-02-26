@@ -15,7 +15,7 @@ def samples
 end
 
 def reader = CashManagement::BankToCustomerStatement::Reader.new(samples.fetch(:v2), version: :v2)
-def doc = reader.read
+def doc = reader.parse
 def stmt = doc.bank_to_customer_statement
 
 require "irb"

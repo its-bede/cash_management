@@ -35,7 +35,7 @@ module CashManagement
         @card_transaction = element.at_xpath("./CardTx") ? CardEntry.new(element.at_xpath("./CardTx")) : nil
         @entry_details = element.xpath("./NtryDtls").map { |detail| EntryDetails.new(detail) }
         @additional_entry_information = element.at_xpath("./AddtlNtryInf")&.text
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       private

@@ -41,7 +41,7 @@ module CashManagement
       end
 
       # Read the bank to customer statement file
-      # @return [Nokogiri::XML::Document] The bank to customer statement file as a Nokogiri XML document
+      # @return [CashManagement::BankToCustomerStatement::Document] The bank to customer statement file as a Nokogiri XML document
       # @raise [CashManagement::BankToCustomerStatement::Reader::ValidationError] If the bank to customer statement file is invalid
       def parse
         xsd = Nokogiri::XML::Schema(xsd_path.read)
@@ -73,24 +73,7 @@ module CashManagement
       private
 
       def build_document(doc)
-        # Check if the required elements exist before creating the document
-        statement_node = doc.at_xpath("//Document/BkToCstmrStmt")
-
-        raise ValidationError, "Invalid document structure: Missing BkToCstmrStmt element" if statement_node.nil?
-
-        statement = BankToCustomerStatement.new(statement_node)
-
-        # Safely access message_id with proper nil checking
-        message_id = statement.group_header&.message_id || "unknown"
-        CashManagement.config.logger.info("Successfully parsed statement with ID: #{message_id}")
-
-        Document.new(doc)
-      rescue NoMethodError => e
-        CashManagement.config.logger.error("Error parsing document structure: #{e.message}")
-        raise ValidationError, "Invalid document structure: #{e.message}"
-      rescue StandardError => e
-        CashManagement.config.logger.error("Unexpected error parsing document: #{e.message}")
-        raise
+        Document.new(doc.at_xpath("Document"))
       end
 
       # Format the errors

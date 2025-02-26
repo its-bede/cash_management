@@ -11,7 +11,7 @@ module CashManagement
       def initialize(element)
         @from_date_time = parse_datetime(element.at_xpath("./FrDtTm")&.text)
         @to_date_time = parse_datetime(element.at_xpath("./ToDtTm")&.text)
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       private

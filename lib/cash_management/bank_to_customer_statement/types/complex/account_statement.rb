@@ -34,7 +34,7 @@ module CashManagement
         @transactions_summary = element.at_xpath("./TxsSummry") ? TotalTransactions.new(element.at_xpath("./TxsSummry")) : nil
         @entries = element.xpath("./Ntry").map { |entry_elem| ReportEntry.new(entry_elem) }
         @additional_statement_information = element.at_xpath("./AddtlStmtInf")&.text
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
 
       def summary

@@ -12,7 +12,7 @@ module CashManagement
       def initialize(element)
         @page_number = element.at_xpath("./PgNb")&.text&.to_i
         @last_page_indicator = element.at_xpath("./LastPgInd")&.text == "true"
-        @raw = element.to_s
+        @raw = element.to_s if CashManagement.config.keep_raw_xml
       end
     end
   end
